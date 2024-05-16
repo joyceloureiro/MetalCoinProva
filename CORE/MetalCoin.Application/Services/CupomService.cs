@@ -1,15 +1,8 @@
 ﻿using Metalcoin.Core.Domain;
-using Metalcoin.Core.Dtos;
-using Metalcoin.Core.Dtos.Categorias;
 using Metalcoin.Core.Dtos.Request;
 using Metalcoin.Core.Dtos.Response;
 using Metalcoin.Core.Interfaces.Repositories;
 using Metalcoin.Core.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MetalCoin.Application.Services
 {
@@ -52,37 +45,47 @@ namespace MetalCoin.Application.Services
 
         public async Task<CupomResponse> CupomCadastrar(CupomCadastrarRequest cupom)
         {
-            var cupomExistente = await _cupomRepository.BuscarPorNome(cupom.Nome);
 
-            if (cupomExistente != null) return null;
-
-            var categoriaEntidade = new Categoria
+            var cupomEntidade = new Cupom
             {
-                Nome = categoria.Nome.ToUpper(),
-                Status = categoria.Status,
-                DataCadastro = DateTime.Now,
-                DataAlteracao = DateTime.Now
+               
+                CodigoCupom = cupom.CodigoCupom,
+                Descricao = cupom.Descricao,
+                ValorDesconto = cupom.ValorDesconto,
+                QtdCuponsLiberados = cupom.QtdCuponsLiberados,
+                TipoDesconto = cupom.TipoDesconto,
+                StatusCupom = cupom.StatusCupom,
+                DataValidade = cupom.DataValidade
             };
 
             await _cupomRepository.Adicionar(cupomEntidade);
 
-            var response = new CategoriaResponse
+            var response = new CupomResponse
             {
-                Id = categoriaEntidade.Id,
-                Nome = categoriaEntidade.Nome,
-                Status = categoriaEntidade.Status,
-                DataCadastro = categoriaEntidade.DataCadastro,
-                DataAlteracao = categoriaEntidade.DataAlteracao
+                Id = cupomEntidade.Id,
+                CodigoCupom = cupomEntidade.CodigoCupom,
+                Descricao = cupomEntidade.Descricao,
+                ValorDesconto = cupomEntidade.ValorDesconto,
+                QtdCuponsLiberados = cupomEntidade.QtdCuponsLiberados,
+                QtdCuponsUsados = cupomEntidade.QtdCuponsUsados,
+                TipoDesconto = cupomEntidade.TipoDesconto,
+                StatusCupom = cupomEntidade.StatusCupom,
+                DataValidade = cupomEntidade.DataValidade
             };
 
             return response;
         }
 
-    }
-
-    public async Task<bool> DeletarCupom(Guid id)
+        public async Task<bool> DeletarCupom(Guid id)
         {
-            throw new NotImplementedException();
+            var cupom = await _cupomRepository.ObterPorId(id);
+            if (cupom == null) return false;
+
+
+            await _cupomRepository.RemoverCupom(id);
+            return true;
         }
     }
+
+    
 }
