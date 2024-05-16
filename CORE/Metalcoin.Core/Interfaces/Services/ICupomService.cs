@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Metalcoin.Core.Dtos.Categorias;
+using Metalcoin.Core.Dtos.Request;
+using Metalcoin.Core.Dtos.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace Metalcoin.Core.Interfaces.Services
 {
-    internal interface Interface1
+    public interface ICupomService
     {
+        Task<CupomResponse> CupomCadastrarRequest(CupomCadastrarRequest cupom);
+        Task<CupomResponse> CupomAtualizarRequest(CupomAtualizarRequest cupom);
+        Task<bool> DeletarCupom(Guid id);
     }
 }
