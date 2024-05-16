@@ -12,5 +12,6 @@ namespace Metalcoin.Core.Interfaces.Repositories
     {
         Task<Cupom> BuscarPorAtivos(StatusCupom statusCupom);
         Task<Cupom> BuscarPorInativos(StatusCupom statusCupom);
+        Task<Cupom> DesativarCupom(StatusCupom statusCupom);
     }
 }

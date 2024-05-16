@@ -35,7 +35,7 @@ namespace Metalcoin.Core.Dtos.Request
 
 
         [Required(ErrorMessage = "Status do Cupom é obrigatorio ")]
-        public StatusCupom Status { get; set; }
+        public StatusCupom StatusCupom { get; set; }
         
     }
 }

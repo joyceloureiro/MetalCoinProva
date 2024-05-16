@@ -49,21 +49,24 @@ namespace MetalCoin.Infra.Data.Repositories
         }
 
 
-        public Task AdicionarCupons(TEntidade entidade)
+        public virtual async Task AdicionarCupons(TEntidade entidade)
         {
-            throw new NotImplementedException();
+            DbSet.Add(entidade);
+            await Salvar();
         }
-        public Task AtualizarCupons(TEntidade entidade)
+        public virtual async Task AtualizarCupons(TEntidade entidade)
         {
-            throw new NotImplementedException();
+            DbSet.Update(entidade);
+            await Salvar();
         }
-        public Task<List<TEntidade>> ObterTodosCupons()
+        public virtual async Task<List<TEntidade>> ObterTodosCupons()
         {
-            throw new NotImplementedException();
+            return await DbSet.ToListAsync();
         }
-        public Task RemoverCupom(Guid id)
+        public virtual async Task RemoverCupom(Guid id)
         {
-            throw new NotImplementedException();
+            DbSet.Remove(new TEntidade { Id = id });
+            await Salvar();
         }
     }
 }

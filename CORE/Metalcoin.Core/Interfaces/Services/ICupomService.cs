@@ -11,8 +11,8 @@ namespace Metalcoin.Core.Interfaces.Services
 {
     public interface ICupomService
     {
-        Task<CupomResponse> CupomCadastrarRequest(CupomCadastrarRequest cupom);
-        Task<CupomResponse> CupomAtualizarRequest(CupomAtualizarRequest cupom);
+        Task<CupomResponse> CupomCadastrar(CupomCadastrarRequest cupom);
+        Task<CupomResponse> CupomAtualizar(CupomAtualizarRequest cupom);
         Task<bool> DeletarCupom(Guid id);
     }
 }
