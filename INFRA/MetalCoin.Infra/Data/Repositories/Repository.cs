@@ -18,14 +18,14 @@ namespace MetalCoin.Infra.Data.Repositories
         {
             DbSet.Add(entidade);
             await Salvar();
-        }
+        }     
 
         public virtual async Task Atualizar(TEntidade entidade)
         {
             DbSet.Update(entidade);
             await Salvar();
         }
-
+        
         public virtual async Task<TEntidade> ObterPorId(Guid id)
         {
             return await DbSet.FindAsync(id);
@@ -35,16 +35,35 @@ namespace MetalCoin.Infra.Data.Repositories
         {
             return await DbSet.ToListAsync();
         }
+    
 
         public virtual async Task Remover(Guid id)
         {
             DbSet.Remove(new TEntidade { Id = id });
             await Salvar();
         }
-
+        
         public async Task<int> Salvar()
         {
             return await Db.SaveChangesAsync();
+        }
+
+
+        public Task AdicionarCupons(TEntidade entidade)
+        {
+            throw new NotImplementedException();
+        }
+        public Task AtualizarCupons(TEntidade entidade)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<List<TEntidade>> ObterTodosCupons()
+        {
+            throw new NotImplementedException();
+        }
+        public Task RemoverCupom(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
