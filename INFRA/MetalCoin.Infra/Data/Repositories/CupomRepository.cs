@@ -2,11 +2,6 @@
 using Metalcoin.Core.Enums;
 using Metalcoin.Core.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MetalCoin.Infra.Data.Repositories
 {
@@ -27,10 +22,12 @@ namespace MetalCoin.Infra.Data.Repositories
             return resultado;
         }
 
-        public async Task<Cupom> DesativarCupom(StatusCupom statusCupom)
+        public async Task<Cupom> DesativarCupom(Guid id)
         {
-            var resultado = await DbSet.Where(c => c.StatusCupom == statusCupom).FirstOrDefaultAsync();
+            var resultado = await DbSet.Where(c => c.Id == id).FirstOrDefaultAsync();
             return resultado;
         }
+
+       
     }
 }

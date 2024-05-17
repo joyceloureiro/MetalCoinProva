@@ -45,7 +45,10 @@ namespace MetalCoin.Application.Services
 
         public async Task<CupomResponse> CupomCadastrar(CupomCadastrarRequest cupom)
         {
-
+            if(cupom.DataValidade < DateTime.Today)
+            {
+                throw new ArgumentException("A data de validade não pode ser anterior a data atual! ");
+            }
             var cupomEntidade = new Cupom
             {
                

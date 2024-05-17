@@ -27,6 +27,7 @@ namespace Metalcoin.Core.Dtos.Request
 
 
         [Required(ErrorMessage = "Data de Validade é obrigatorio ")]
+        [DataType(DataType.DateTime)]
         public DateTime DataValidade { get; set; }
 
 

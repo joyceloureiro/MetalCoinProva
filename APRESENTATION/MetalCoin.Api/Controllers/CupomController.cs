@@ -1,13 +1,8 @@
-﻿using Metalcoin.Core.Interfaces.Repositories;
+﻿using Metalcoin.Core.Dtos.Request;
+using Metalcoin.Core.Enums;
+using Metalcoin.Core.Interfaces.Repositories;
 using Metalcoin.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using Metalcoin.Core.Dtos.Categorias;
-using Metalcoin.Core.Dtos.Request;
-using Metalcoin.Core.Dtos.Response;
-using MetalCoin.Infra.Data.Repositories;
-using MetalCoin.Application.Services;
-using Metalcoin.Core.Domain;
-using Metalcoin.Core.Enums;
 
 namespace MetalCoin.Api.Controllers
 {
@@ -36,11 +31,34 @@ namespace MetalCoin.Api.Controllers
 
         [HttpGet]
         [Route("CuponsAtivos")]
-        public async Task<ActionResult> ObterCuponsAtivos(StatusCupom statusCupom)
+        public async Task<ActionResult> ObterCuponsAtivos()
         {
-            var categoria = await _cupomRepository.BuscarPorAtivos(statusCupom);
-            if (categoria == null) return BadRequest("Categoria não encontrada");
-            return Ok(categoria);
+            var cupom = await _cupomRepository.BuscarPorAtivos(StatusCupom.Ativo);
+            if (cupom == null) BadRequest("Nenhum cupom ativo encontrado");
+            return Ok(cupom);
+        }
+
+        [HttpGet]
+        [Route("CuponsInativos")]
+        public async Task<ActionResult> ObterCuponsInativos()
+        {
+            var cupom = await _cupomRepository.BuscarPorInativos(StatusCupom.Desativado);
+            if (cupom == null) BadRequest("Nenhum cupom ativo encontrado");
+            return Ok(cupom);
+        }
+
+        [HttpDelete]
+        [Route("desativarCupom/{id:guid}")]
+        public async Task<ActionResult> DesativarCupom(Guid id)
+        {
+
+            var cupom = await _cupomRepository.DesativarCupom(id);
+
+            if (cupom == null) return BadRequest("cupom não encontrado");
+            cupom.StatusCupom = StatusCupom.Desativado;
+            await _cupomRepository.AtualizarCupons(cupom);
+
+            return Ok("cupom deletado com sucesso");
         }
 
         [HttpPost]
@@ -48,7 +66,6 @@ namespace MetalCoin.Api.Controllers
         public async Task<ActionResult> CadastrarCategoria([FromBody] CupomCadastrarRequest cupom)
         {
             if (cupom == null) return BadRequest("Informe o nome do cupom");
-
             var response = await _cupomService.CupomCadastrar(cupom);
 
             if (response == null) return BadRequest("Cupom já existe");
@@ -61,7 +78,6 @@ namespace MetalCoin.Api.Controllers
         public async Task<ActionResult> AtualizarCupom([FromBody] CupomAtualizarRequest cupom)
         {
             if (cupom == null) return BadRequest("Nenhum valor chegou na API");
-
             var response = await _cupomService.CupomAtualizar(cupom);
 
             return Ok(response);
@@ -72,7 +88,6 @@ namespace MetalCoin.Api.Controllers
         public async Task<ActionResult> RemoverCupom(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Id não informado");
-
             var resultado = await _cupomService.DeletarCupom(id);
 
             if (!resultado) return BadRequest("O cupom que está tentando deletar não existe");
