@@ -10,5 +10,10 @@ namespace Metalcoin.Core.Interfaces.Repositories
         Task<TEntity> ObterPorId(Guid id);
         Task<List<TEntity>> ObterTodos();
         Task<int> Salvar();
+
+        Task<List<TEntity>> ObterTodosCupons();
+        Task AdicionarCupons(TEntity entidade);
+        Task AtualizarCupons(TEntity entidade);
+        Task RemoverCupom(Guid id);
     }
 }
