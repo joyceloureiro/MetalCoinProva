@@ -48,7 +48,7 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("desativarCupom/{id:guid}")]
+        [Route("DesativarCupom/{id:guid}")]
         public async Task<ActionResult> DesativarCupom(Guid id)
         {
 
@@ -58,11 +58,25 @@ namespace MetalCoin.Api.Controllers
             cupom.StatusCupom = StatusCupom.Desativado;
             await _cupomRepository.AtualizarCupons(cupom);
 
-            return Ok("cupom deletado com sucesso");
+            return Ok("cupom desativado com sucesso");
+        }
+
+        [HttpDelete]
+        [Route("AtivarCupom/{id:guid}")]
+        public async Task<ActionResult> AtivarCupom(Guid id)
+        {
+
+            var cupom = await _cupomRepository.AtivarCupom(id);
+
+            if (cupom == null) return BadRequest("cupom não encontrado");
+            cupom.StatusCupom = StatusCupom.Ativo;
+            await _cupomRepository.AtualizarCupons(cupom);
+
+            return Ok("Cupom ativado com sucesso");
         }
 
         [HttpPost]
-        [Route("cadastrar Cupom")]
+        [Route("CadastrarCupom")]
         public async Task<ActionResult> CadastrarCategoria([FromBody] CupomCadastrarRequest cupom)
         {
             if (cupom == null) return BadRequest("Informe o nome do cupom");
@@ -70,11 +84,11 @@ namespace MetalCoin.Api.Controllers
 
             if (response == null) return BadRequest("Cupom já existe");
 
-            return Created("cupom", response);
+            return Created("Cupom cadastrado", response);
         }
 
         [HttpPut]
-        [Route("atualizar")]
+        [Route("Atualizar")]
         public async Task<ActionResult> AtualizarCupom([FromBody] CupomAtualizarRequest cupom)
         {
             if (cupom == null) return BadRequest("Nenhum valor chegou na API");
@@ -84,7 +98,7 @@ namespace MetalCoin.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("deletarCupom/{id:guid}")]
+        [Route("DeletarCupom/{id:guid}")]
         public async Task<ActionResult> RemoverCupom(Guid id)
         {
             if (id == Guid.Empty) return BadRequest("Id não informado");

@@ -9,6 +9,8 @@ namespace MetalCoin.Infra.Data.Repositories
     {
         public CupomRepository(AppDbContext appDbContext) : base(appDbContext) { }
 
+     
+
         public async Task<Cupom> BuscarPorAtivos(StatusCupom statusCupom)
         {
 
@@ -27,7 +29,12 @@ namespace MetalCoin.Infra.Data.Repositories
             var resultado = await DbSet.Where(c => c.Id == id).FirstOrDefaultAsync();
             return resultado;
         }
+        public async Task<Cupom> AtivarCupom(Guid id)
+        {
+            var resultado = await DbSet.Where(c => c.Id == id).FirstOrDefaultAsync();
+            return resultado;
+        }
 
-       
+
     }
 }
